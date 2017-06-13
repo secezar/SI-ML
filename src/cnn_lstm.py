@@ -81,3 +81,4 @@ class CNNLSTM():
         print('Test score:', score)
         print('Test accuracy:', acc)
 
+model = CNNLSTM().initialize()
