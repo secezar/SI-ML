@@ -18,8 +18,8 @@ class CNNLSTM():
     def __init__(self):
         pass
     # Embedding
-    max_features = 20000
-    maxlen = 100
+    max_features = 10000
+    maxlen = 1000
     embedding_size = 128
 
     # Convolution
@@ -57,6 +57,8 @@ class CNNLSTM():
         model.compile(loss='binary_crossentropy',
                       optimizer='adam',
                       metrics=['accuracy'])
+
+        return model
 
     def train(self, model):
         print('Loading data...')
