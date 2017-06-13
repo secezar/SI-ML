@@ -46,10 +46,9 @@ class CNNLSTM():
         model.add(Dropout(0.25))
         model.add(Conv1D(self.filters,
                          self.kernel_size,
-                         padding='valid',
-                         activation='relu',
-                         strides=1))
-        model.add(MaxPooling1D(pool_size=self.pool_size))
+                         border_mode='valid',
+                         activation='relu'))
+        model.add(MaxPooling1D(pool_length=self.pool_size))
         model.add(LSTM(self.lstm_output_size))
         model.add(Dense(1))
         model.add(Activation('sigmoid'))
@@ -57,7 +56,7 @@ class CNNLSTM():
         model.compile(loss='binary_crossentropy',
                       optimizer='adam',
                       metrics=['accuracy'])
-
+        print('Model Compiled')
         return model
 
     def train(self, model):
@@ -81,3 +80,4 @@ class CNNLSTM():
         score, acc = model.evaluate(x_test, y_test, batch_size=self.batch_size)
         print('Test score:', score)
         print('Test accuracy:', acc)
+
