@@ -18,10 +18,11 @@ import sys
 import numpy as np
 
 from sklearn.datasets import fetch_20newsgroups
-from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
+from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer, HashingVectorizer, TfidfVectorizer
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.neural_network.multilayer_perceptron import MLPClassifier
+from sklearn.svm import SVC
 
 BASE_DIR = ''
 TEXT_DATA_DIR = 'C:\\Users\\Jola\\Desktop\\PROJEKTY\\SI\\SI-ML\\src\\glove.6B\\glove.6B.100d.txt'
@@ -54,26 +55,33 @@ test_labels = newsgroups_test['target']
 
 
 from sklearn.pipeline import Pipeline
-text_clf = Pipeline([('vect', CountVectorizer()),
-                      ('tfidf', TfidfTransformer()),
+text_clf = Pipeline([('tfidf', TfidfVectorizer(max_features=10000)),
                       ('clf', MultinomialNB())])
 text_clf = text_clf.fit(train_texts, train_labels)
 predicted = text_clf.predict(test_texts)
 print np.mean(predicted == test_labels)
 
-from sklearn.pipeline import Pipeline
-text_clf = Pipeline([('vect', CountVectorizer()),
-                      ('tfidf', TfidfTransformer()),
-                      ('clf', KNeighborsClassifier())])
+text_clf = Pipeline([('vect', CountVectorizer(max_features=10000)),
+                      ('clf', MultinomialNB())])
 text_clf = text_clf.fit(train_texts, train_labels)
 predicted = text_clf.predict(test_texts)
 print np.mean(predicted == test_labels)
 
-from sklearn.pipeline import Pipeline
-text_clf = Pipeline([('vect', CountVectorizer()),
-                      ('tfidf', TfidfTransformer()),
+text_clf = Pipeline([('vect', CountVectorizer(max_features=10000)),
+                     ('tfidf', TfidfTransformer()),
+                     ('clf', SVC())])
+text_clf = text_clf.fit(train_texts, train_labels)
+predicted = text_clf.predict(test_texts)
+print np.mean(predicted == test_labels)
+
+text_clf = Pipeline([('vect', TfidfVectorizer(max_features=10000)),
                       ('clf', MLPClassifier())])
 text_clf = text_clf.fit(train_texts, train_labels)
 predicted = text_clf.predict(test_texts)
 print np.mean(predicted == test_labels)
 
+text_clf = Pipeline([('vect', CountVectorizer(max_features=10000)),
+                      ('clf', MLPClassifier())])
+text_clf = text_clf.fit(train_texts, train_labels)
+predicted = text_clf.predict(test_texts)
+print np.mean(predicted == test_labels)
