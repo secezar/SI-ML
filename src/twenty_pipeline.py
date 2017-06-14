@@ -23,6 +23,8 @@ from sklearn.naive_bayes import MultinomialNB
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.neural_network.multilayer_perceptron import MLPClassifier
 from sklearn.svm import SVC
+from sklearn.linear_model.stochastic_gradient import SGDClassifier
+from sklearn.linear_model.logistic import LogisticRegression
 
 BASE_DIR = ''
 TEXT_DATA_DIR = 'C:\\Users\\Jola\\Desktop\\PROJEKTY\\SI\\SI-ML\\src\\glove.6B\\glove.6B.100d.txt'
@@ -69,7 +71,14 @@ print np.mean(predicted == test_labels)
 
 text_clf = Pipeline([('vect', CountVectorizer(max_features=10000)),
                      ('tfidf', TfidfTransformer()),
-                     ('clf', SVC())])
+                     ('clf', SGDClassifier())])
+text_clf = text_clf.fit(train_texts, train_labels)
+predicted = text_clf.predict(test_texts)
+print np.mean(predicted == test_labels)
+
+text_clf = Pipeline([('vect', CountVectorizer(max_features=10000)),
+                     ('tfidf', TfidfTransformer()),
+                     ('clf', LogisticRegression())])
 text_clf = text_clf.fit(train_texts, train_labels)
 predicted = text_clf.predict(test_texts)
 print np.mean(predicted == test_labels)

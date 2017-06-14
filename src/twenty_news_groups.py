@@ -86,7 +86,7 @@ sequences = tokenizer.texts_to_sequences(texts)
 word_index = tokenizer.word_index
 print('Found %s unique tokens.' % len(word_index))
 
-data = pad_sequences(sequences, maxlen=MAX_SEQUENCE_LENGTH)
+data = pad_sequences(sequences, maxlen=MAX_NB_WORDS)
 
 labels = to_categorical(np.asarray(labels))
 print('Shape of data tensor:', data.shape)
@@ -124,19 +124,19 @@ for word, i in word_index.items():
 embedding_layer = Embedding(num_words,
                             EMBEDDING_DIM,
                             weights=[embedding_matrix],
-                            input_length=MAX_SEQUENCE_LENGTH,
+                            input_length=MAX_NB_WORDS,
                             trainable=False)
 
 print('Initialize model.')
 
 # initialize a 1D convnet with global maxpooling
-sequence_input = Input(shape=(MAX_SEQUENCE_LENGTH,), dtype='int32')
+sequence_input = Input(shape=(MAX_NB_WORDS,), dtype='int32')
 embedded_sequences = embedding_layer(sequence_input)
-x = Conv1D(128, 7, activation='relu')(embedded_sequences)
+x = Conv1D(128, 5, activation='relu')(embedded_sequences)
 x = MaxPooling1D(5)(x)
-x = Conv1D(128, 7, activation='relu')(x)
+x = Conv1D(128, 5, activation='relu')(x)
 x = MaxPooling1D(5)(x)
-x = Conv1D(128, 7, activation='relu')(x)
+x = Conv1D(128, 5, activation='relu')(x)
 x = MaxPooling1D(35)(x)
 x = Flatten()(x)
 x = Dense(128, activation='relu')(x)
